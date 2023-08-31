@@ -47,7 +47,7 @@ async def doc_handler(message: types.Message):
         isActive = True
         await message.answer("Печатаю файл...")
     else:
-        print("Неизвестная OS!")
+        return print("Неизвестная OS!")
 
     if platform.system() == 'Windows':
         os.startfile(os.getcwd() + "/" + file.name, "print")
