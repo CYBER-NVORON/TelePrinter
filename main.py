@@ -46,13 +46,13 @@ async def doc_handler(message: types.Message):
     if platform.system() in ['Windows', 'Linux', 'Darwin']:
         isActive = True
         await message.answer("Печатаю файл...")
+    else:
+        print("Неизвестная OS!")
 
     if platform.system() == 'Windows':
         os.startfile(os.getcwd() + "/" + file.name, "print")
     elif platform.system() == 'Darwin' or platform.system() == 'Linux':
         os.system(f"lpr -P {printer_name} {os.getcwd() + '/' + file.name}")
-    else:
-        print("Неизвестная OS!")
 
     isActive = False
     
