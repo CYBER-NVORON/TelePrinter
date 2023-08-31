@@ -2,7 +2,6 @@ import os
 import logging
 import settings
 import platform
-from time import sleep
 from aiogram import Bot, Dispatcher, types, executor
 
 bot = Bot(token = settings.token)
@@ -32,24 +31,31 @@ async def start(message: types.Message):
 @dp.message_handler(content_types=types.ContentTypes.DOCUMENT)
 async def doc_handler(message: types.Message):
     global isActive
-    if message.document != None:
-        if message.document.file_name.endswith(".pdf"):
-            await message.answer("Скачиваю файл...")
-            file = await message.document.download()
-            if isActive:
-                await message.answer("Ожидание, когда принтер станет доступным!")
-                while isActive:
-                    pass
-        else:
-            return await message.answer("Неподдерживаемый формат!")
+    
+    if message.document is None:
+        return
+    if not message.document.file_name.endswith(".pdf"):
+        return await message.answer("Неподдерживаемый формат!")
+    
+    await message.answer("Скачиваю файл...")
+    file = await message.document.download()
+    if isActive:
+        await message.answer("Ожидание, когда принтер станет доступным!")
+        while isActive: pass
+
+    if platform.system() == 'Windows':
         isActive = True
         await message.answer("Печатаю файл...")
-        if platform.system() == 'Windows':
-            os.startfile(os.getcwd() + "/" + file.name, "print")
-        elif platform.system() == 'Darwin' or platform.system() == 'Linux':
-            os.system(f"lpr -P {printer_name} {os.getcwd() + '/' + file.name}")
-        else:
-            print("Неизвестная OS!")
+        os.startfile(os.getcwd() + "/" + file.name, "print")
+    elif platform.system() == 'Darwin' or platform.system() == 'Linux':
+        isActive = True
+        await message.answer("Печатаю файл...")
+        os.system(f"lpr -P {printer_name} {os.getcwd() + '/' + file.name}")
+    else:
+        print("Неизвестная OS!")
+        exit(-1)
+    isActive = False
+    
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
