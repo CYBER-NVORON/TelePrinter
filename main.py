@@ -43,17 +43,17 @@ async def doc_handler(message: types.Message):
         await message.answer("Ожидание, когда принтер станет доступным!")
         while isActive: pass
 
-    if platform.system() == 'Windows':
+    if platform.system() in ['Windows', 'Linux', 'Darwin']:
         isActive = True
         await message.answer("Печатаю файл...")
+
+    if platform.system() == 'Windows':
         os.startfile(os.getcwd() + "/" + file.name, "print")
     elif platform.system() == 'Darwin' or platform.system() == 'Linux':
-        isActive = True
-        await message.answer("Печатаю файл...")
         os.system(f"lpr -P {printer_name} {os.getcwd() + '/' + file.name}")
     else:
         print("Неизвестная OS!")
-        exit(-1)
+
     isActive = False
     
 
