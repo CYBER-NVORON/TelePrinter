@@ -10,11 +10,7 @@
 
 ## About
 
-About Text Here
-
-## Documentation
-
-Documentation Here
+TelePrint was conceived as a separate service that could process PDF files through the Telegram bot and print the file through a printer. Interaction is carried out through a chat in Telegram.
 
 ## Distribute
 
