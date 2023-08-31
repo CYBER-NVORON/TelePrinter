@@ -27,4 +27,4 @@ Documentation Here
 
 ## License
 
-- Project CYBER-NVORON.TelePrinter is distributed under MIT license.
+Project CYBER-NVORON.TelePrinter is distributed under MIT license.
