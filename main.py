@@ -1,13 +1,16 @@
+import os
 import logging
-from aiogram import Bot, Dispatcher, types, executor
 import settings
+import platform
 from time import sleep
+from aiogram import Bot, Dispatcher, types, executor
 
 bot = Bot(token = settings.token)
 dp = Dispatcher(bot)
 logging.basicConfig(level=logging.INFO)
 
 isActive = False
+printer_name = ""
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
@@ -34,14 +37,19 @@ async def doc_handler(message: types.Message):
             await message.answer("Скачиваю файл...")
             file = await message.document.download()
             if isActive:
-                await message.answer("Ожидание, когда принтер станет доступным")
+                await message.answer("Ожидание, когда принтер станет доступным!")
                 while isActive:
                     pass
         else:
             return await message.answer("Неподдерживаемый формат!")
         isActive = True
         await message.answer("Печатаю файл...")
-
+        if platform.system() == 'Windows':
+            os.startfile(os.getcwd() + "/" + file.name, "print")
+        elif platform.system() == 'Darwin' or platform.system() == 'Linux':
+            os.system(f"lpr -P {printer_name} {os.getcwd() + '/' + file.name}")
+        else:
+            print("Неизвестная OS!")
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
