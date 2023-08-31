@@ -32,22 +32,24 @@ async def start(message: types.Message):
 async def doc_handler(message: types.Message):
     global isActive
     
+    if platform.system() not in ['Windows', 'Linux', 'Darwin']:
+        return print("Неизвестная OS!")
+
     if message.document is None:
         return
+    
     if not message.document.file_name.endswith(".pdf"):
         return await message.answer("Неподдерживаемый формат!")
     
     await message.answer("Скачиваю файл...")
     file = await message.document.download()
+    
     if isActive:
         await message.answer("Ожидание, когда принтер станет доступным!")
         while isActive: pass
-
-    if platform.system() in ['Windows', 'Linux', 'Darwin']:
-        isActive = True
-        await message.answer("Печатаю файл...")
-    else:
-        return print("Неизвестная OS!")
+    
+    isActive = True
+    await message.answer("Печатаю файл...")
 
     if platform.system() == 'Windows':
         os.startfile(os.getcwd() + "/" + file.name, "print")
