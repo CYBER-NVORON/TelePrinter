@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-   <img src="" alt="Unity Version">
+   <img src="https://img.shields.io/badge/Python_Version-3.10-blue" alt="Python Version">
    <img src="" alt="Game Version">
    <img src="" alt="License">
 </p>
