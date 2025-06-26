@@ -93,7 +93,7 @@ graph TD
 
 ## License
 
-Project CYBER-NVORON.TelePrinter is distributed under the MIT License. See [LICENSE](LICENSE) for details.
+Project CYBER-NVORON.TelePrinter is distributed under the MIT License.
 
 ## Contribution
 
